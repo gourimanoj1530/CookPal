@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "494223958059",
+    "project_id": "cook-pal-cae86",
+    "storage_bucket": "cook-pal-cae86.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494223958059:android:471f719373ebfc653fca6e",
+        "android_client_info": {
+          "package_name": "com.example.cookbook_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABWW1WnMvNpS2zAVBCq0ld5AYj5Qw8xpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
