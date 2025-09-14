@@ -38,7 +38,7 @@ class RecipeCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
       child: Text(
-        recipe.title,
+        recipe.title ?? 'No Title', // ✅ fixed
         style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w600,
@@ -54,7 +54,7 @@ class RecipeCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
       child: Text(
-        recipe.description,
+        recipe.description ?? 'No description available', // ✅ fixed
         style: const TextStyle(
           fontSize: 14,
           color: Colors.black54,
@@ -70,35 +70,20 @@ class RecipeCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
       child: Image.asset(
-        recipe.imageUrl ?? 'assets/recipes_images/placeholder.jpg', // <-- FIXED
+        recipe.imageUrl ?? 'assets/recipes_images/placeholder.jpg', // ✅ fixed
         height: 180,
         width: double.infinity,
         fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) =>
-            Container(
-              height: 180,
-              color: Colors.grey[200],
-              child: const Icon(Icons.image_not_supported, size: 56, color: Colors.grey),
-            ),
+        errorBuilder: (context, error, stackTrace) => Container(
+          height: 180,
+          color: Colors.grey[200],
+          child: const Icon(
+            Icons.image_not_supported,
+            size: 56,
+            color: Colors.grey,
+          ),
+        ),
       ),
     );
-  }
-
-    // If using network images, use this instead:
-    // return ClipRRect(
-    //   borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-    //   child: Image.network(
-    //     recipe.imageUrl,
-    //     height: 180,
-    //     width: double.infinity,
-    //     fit: BoxFit.cover,
-    //     errorBuilder: (context, error, stackTrace) =>
-    //         Container(
-    //           height: 180,
-    //           color: Colors.grey[200],
-    //           child: const Icon(Icons.image_not_supported, size: 56, color: Colors.grey),
-    //         ),
-    //   ),
-    // );
   }
 }
