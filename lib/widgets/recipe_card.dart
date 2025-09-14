@@ -26,9 +26,9 @@ class RecipeCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _buildImage(),
           _buildHeader(),
           _buildContent(),
-          _buildImage(),
         ],
       ),
     );
@@ -36,31 +36,23 @@ class RecipeCard extends StatelessWidget {
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            recipe.title,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
-          ),
-          const Icon(
-            Icons.close,
-            color: Colors.grey,
-            size: 20,
-          ),
-        ],
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+      child: Text(
+        recipe.title,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: Colors.black87,
+        ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
 
   Widget _buildContent() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
       child: Text(
         recipe.description,
         style: const TextStyle(
@@ -68,23 +60,45 @@ class RecipeCard extends StatelessWidget {
           color: Colors.black54,
           height: 1.4,
         ),
-        maxLines: 6,
+        maxLines: 3,
         overflow: TextOverflow.ellipsis,
       ),
     );
   }
 
   Widget _buildImage() {
-    return Container(
-      margin: const EdgeInsets.all(16.0),
-      height: 200,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        image: DecorationImage(
-          image: NetworkImage(recipe.imageUrl),
-          fit: BoxFit.cover,
-        ),
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+      child: Image.asset(
+        recipe.imageUrl ?? 'assets/recipes_images/placeholder.jpg', // <-- FIXED
+        height: 180,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) =>
+            Container(
+              height: 180,
+              color: Colors.grey[200],
+              child: const Icon(Icons.image_not_supported, size: 56, color: Colors.grey),
+            ),
       ),
     );
+  }
+
+    // If using network images, use this instead:
+    // return ClipRRect(
+    //   borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+    //   child: Image.network(
+    //     recipe.imageUrl,
+    //     height: 180,
+    //     width: double.infinity,
+    //     fit: BoxFit.cover,
+    //     errorBuilder: (context, error, stackTrace) =>
+    //         Container(
+    //           height: 180,
+    //           color: Colors.grey[200],
+    //           child: const Icon(Icons.image_not_supported, size: 56, color: Colors.grey),
+    //         ),
+    //   ),
+    // );
   }
 }

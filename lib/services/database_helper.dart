@@ -34,6 +34,7 @@ class DatabaseHelper {
     return await openDatabase(path, readOnly: false);
   }
 }
+
 extension RecipeQueries on DatabaseHelper {
   Future<List<Recipe>> fetchAllRecipes() async {
     final db = await database;

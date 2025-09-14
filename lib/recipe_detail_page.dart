@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'database_helper.dart';
 import 'models/recipe_model.dart';
 
@@ -83,6 +82,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
               SliverList(
                 delegate: SliverChildListDelegate([
                   _buildRecipeHeader(recipe),
+                  _buildInfoCards(recipe),
                   _buildSectionTitle('Ingredients'),
                   _buildIngredientsList(recipe.ingredients),
                   _buildSectionTitle('Instructions'),
@@ -109,10 +109,10 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
         background: Hero(
           tag: 'recipeImage-${recipe.id}',
           child: Image.asset(
-            'assets/images/${recipe.imageUrl}',
+            recipe.imageUrl, // Use DB field directly
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) =>
-            const Icon(Icons.restaurant_menu),
+            const Icon(Icons.restaurant_menu, size: 80),
           ),
         ),
       ),
@@ -125,7 +125,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
         IconButton(
           icon: const Icon(Icons.share),
           onPressed: () {
-            // Add share functionality
+            // Add share functionality here if needed
           },
           color: Colors.white,
         ),
@@ -136,18 +136,23 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   Widget _buildRecipeHeader(Recipe recipe) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Text(
+        recipe.title,
+        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildInfoCards(Recipe recipe) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            recipe.title,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            recipe.ingredients.join(', '), // Fixed: Join the list into a string
-            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-          ),
+          _buildInfoCard(Icons.schedule, '${recipe.cookingTime} min', 'Time'),
+          _buildInfoCard(Icons.people, '${recipe.servings}', 'Servings'),
+          if (recipe.tags.isNotEmpty)
+            _buildInfoCard(Icons.label, recipe.tags.join(', '), 'Tags'),
         ],
       ),
     );
@@ -158,13 +163,14 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        width: 95,
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
         child: Column(
           children: [
             Icon(icon, color: Colors.deepOrangeAccent),
             const SizedBox(height: 4),
-            Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
-            Text(label, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+            Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+            Text(label, style: TextStyle(color: Colors.grey[600], fontSize: 11)),
           ],
         ),
       ),
